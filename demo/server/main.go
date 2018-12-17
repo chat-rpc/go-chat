@@ -20,6 +20,9 @@ const (
 type server struct{}
 
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply,error) {
+	if error != nil {
+		log.Printf("Client :%s visit.",in.Name)
+	}
 	return &pb.HelloReply{Message:"Hello " + in.Name} , nil
 }
 
