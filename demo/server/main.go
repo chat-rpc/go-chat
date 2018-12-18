@@ -6,6 +6,10 @@ import (
 	"context"
 	"log"
 	"net"
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"google.golang.org/grpc"
 	pb "github.com/chat-rpc/go-chat/demo/helloworld"
@@ -27,6 +31,26 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 }
 
 func main() {
+	//优雅退出监听
+	c := make(chan os.Signal)
+	//set signal will exec quit
+	signal.Notify(c,syscall.SIGHUP,syscall.SIGINT,syscall.SIGTERM,syscall.SIGQUIT,syscall.SIGUSR1,syscall.SIGUSR2)
+
+	go func() {
+		for s := range c {
+			switch s {
+				case syscall.SIGHUP,syscall.SIGINT,syscall.SIGTERM,syscall.SIGQUIT :
+					fmt.Println("退出",s)
+					ExitFunc(s)
+				case syscall.SIGUSR1,syscall.SIGUSR2:
+					ExitFunc(s)
+			chatsvr	default:
+					ExitFunc(s)
+
+			}
+		}
+	}
+
 	lis, err := net.Listen("tcp",port)
 
 	if err != nil {
@@ -42,5 +66,11 @@ func main() {
 		log.Fatalf("Failed to save: %v", err)
 	}
 
-	log.Printf(">>>>>>>>>");
+}
+
+//退出函数
+func ExitFunc(s int) {
+	fmt.Println("quit:",s)
+	fmt.Println("正在退出...")
+	os.Exit(0)
 }
