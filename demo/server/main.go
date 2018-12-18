@@ -41,15 +41,16 @@ func main() {
 			switch s {
 				case syscall.SIGHUP,syscall.SIGINT,syscall.SIGTERM,syscall.SIGQUIT :
 					fmt.Println("退出",s)
-					ExitFunc(s)
+					ExitFunc()
 				case syscall.SIGUSR1,syscall.SIGUSR2:
-					ExitFunc(s)
-			chatsvr	default:
-					ExitFunc(s)
+					fmt.Println("USR quit",s)
+					ExitFunc()
+				default:
+					ExitFunc()
 
 			}
 		}
-	}
+	}()
 
 	lis, err := net.Listen("tcp",port)
 
@@ -69,8 +70,8 @@ func main() {
 }
 
 //退出函数
-func ExitFunc(s int) {
-	fmt.Println("quit:",s)
+func ExitFunc() {
+	//fmt.Println("quit:",s)
 	fmt.Println("正在退出...")
 	os.Exit(0)
 }

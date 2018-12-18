@@ -7,6 +7,8 @@
 # 
 # extension define default window
 EXT_SUFFIX := exe
+SHELL=PATH='$(PATH)' /bin/bash
+
 include mk/util.mk
 
 pro_name=nbs-chat
@@ -16,7 +18,6 @@ MDP = mkdir -p
 BASEDIR += .
 bin_out := bin
 PATH := $(bin_out):$(PATH)
-SHELL := /bin/bash
 
 .PHONY: all mkout clean protoc_go chatsvr
 
