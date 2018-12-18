@@ -7,7 +7,7 @@
 # 
 # extension define default window
 EXT_SUFFIX := exe
-SHELL=PATH='$(PATH)' /bin/bash
+SHELL=PATH='$(PATH)' /bin/sh
 
 include mk/util.mk
 
@@ -21,7 +21,7 @@ PATH := $(bin_out):$(PATH)
 
 .PHONY: all mkout clean protoc_go chatsvr
 
-all: mkout protoc_go chatsvr
+all: mkout protoc_go chatsvr chatcli
 
 # @echo $(EXT_SUFFIX)
 
@@ -38,14 +38,14 @@ protoc_go:
 svr_dir = server
 svr_exec := $(pro_name)-svr$(EXT_SUFFIX)
 chatsvr: protoc_go
-	go build -a -x -o $(bin_out)/$(svr_exec) ./$(svr_dir)/; \
+	go build -a -x -o $(bin_out)/$(svr_exec) ./$(svr_dir)/
 	echo "chat_svr exec complete."
 
 # client 
 cli_dir=client
 cli_exec=$(pro_name)-cli$(EXT_SUFFIX)
 chatcli: protoc_go
-	go build -a -x o $(bin_out)/$(cli_exec) ./$(cli_dir)/; \
+	go build -a -x -o $(bin_out)/$(cli_exec) ./$(cli_dir)/
 	echo "chat_client exec complete."
 	
 help:

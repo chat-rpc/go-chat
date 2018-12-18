@@ -8,8 +8,6 @@ import (
 	"net"
 	"fmt"
 	"os"
-	"os/signal"
-	"syscall"
 
 	"google.golang.org/grpc"
 	pb "github.com/chat-rpc/go-chat/demo/helloworld"
@@ -18,6 +16,7 @@ import (
 
 const (
 	port	= ":50051"
+	SVR_NAME= "NBS-CHAT-SERVER"
 )
 
 //Server type
@@ -32,28 +31,8 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 
 func main() {
 	//优雅退出监听
-	c := make(chan os.Signal)
-	//set signal will exec quit
-	signal.Notify(c,syscall.SIGHUP,syscall.SIGINT,syscall.SIGTERM,syscall.SIGQUIT,syscall.SIGUSR1,syscall.SIGUSR2)
-
-	go func() {
-		for s := range c {
-			switch s {
-				case syscall.SIGHUP,syscall.SIGINT,syscall.SIGTERM,syscall.SIGQUIT :
-					fmt.Println("退出",s)
-					ExitFunc()
-				case syscall.SIGUSR1,syscall.SIGUSR2:
-					fmt.Println("USR quit",s)
-					ExitFunc()
-				default:
-					ExitFunc()
-
-			}
-		}
-	}()
-
+	fmt.Println(SVR_NAME," starting...")
 	lis, err := net.Listen("tcp",port)
-
 	if err != nil {
 		log.Fatalf("failed to listen: %v" ,err)
 	}
@@ -71,7 +50,6 @@ func main() {
 
 //退出函数
 func ExitFunc() {
-	//fmt.Println("quit:",s)
 	fmt.Println("正在退出...")
 	os.Exit(0)
 }

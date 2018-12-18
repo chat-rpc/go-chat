@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	"log"
+	"fmt"
 	"os"
 	"time"
 
@@ -18,7 +19,7 @@ const(
 
 func main() {
 	conn,err := grpc.Dial(address,grpc.WithInsecure())
-	
+	fmt.Println("client start...")
 	if err != nil {
 		log.Fatalf("did not connect: %v",err)
 	}
