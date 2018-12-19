@@ -1,11 +1,11 @@
-syntax = "protoc3";
+syntax = "proto3";
 
 package demo;
 
-import "github.com/golang/protobuf/ptypes/timestamp/timestamp/timestamp.proto";
+import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
 
 service Greeter {
-	rpc SayHello(stream HelloRequest) returns (stream HelloReply) {}
+	rpc SayHello(stream HelloRequest) returns (stream HelloReply) {};
 }
 
 message HelloRequest {
